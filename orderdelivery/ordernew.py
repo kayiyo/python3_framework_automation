@@ -44,8 +44,8 @@ class ordernew(object):
 
         # 获取人
         button = ".//*[@id='tt']/div[1]/div[2]/div/div[5]/div[2]/div/div[2]/span/a/span"
-        search_key = u"张立才"
-        search = ".//*[@id='dialog']/div/div[1]/div/form/table/tbody/tr/td[2]/span/input[1]"
+        search_key = "008691"
+        search = ".//*[@id='dialog']/div/div[1]/div/form/table/tbody/tr/td[1]/span/input[1]"
         move = ".//*[@id='dialog']/div/div[2]/div/div/div/div[1]/div[2]/div[1]/div/table/tbody/tr/td[1]/div/span[1]"
         order.choose(button, search_key, search, move)
 
@@ -79,7 +79,7 @@ class ordernew(object):
         order.select_list(key1=2,
                           xpath=".//*[@id='tt']/div[1]/div[2]/div/div[9]/div[2]/div/div[2]/span/input[1]")      # 客户类型
 
-        order.send_key(key1=u"王回款",
+        order.send_key(key1=u"回款",
                        xpath=".//*[@id='tt']/div[1]/div[2]/div/div[10]/div[1]/div/div[2]/span/input[1]")    # 回款责任人
 
         button = ".//*[@id='tt']/div[1]/div[2]/div/div[10]/div[2]/div/div[2]/span/a/span"    # 商务技术经办人
@@ -153,6 +153,8 @@ class ordernew(object):
         time.sleep(3)
         order.link_text(u"确定")
         time.sleep(3)
+        ordernew_status = order.read_info(xpath="//div[contains(text(),u'成功')]")
+        print(ordernew_status)
         order.link_text(u"确定")
         time.sleep(3)
         return order_xsht

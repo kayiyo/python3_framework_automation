@@ -4,6 +4,8 @@
 import configparser
 import os.path
 
+from framework.logger import Logger
+from framework.webbase import webbase
 from orderdelivery.ordernew import ordernew
 from orderdelivery.projectmanager import projectmanager
 from orderdelivery.projectexecute import projectexecute
@@ -19,8 +21,6 @@ from orderdelivery.checkout import checkout
 from orderdelivery.operationout import operationout
 from orderdelivery.logisticstrack import logisticstrack
 from orderdelivery.financialpayment import financialpayment
-from framework.webbase import webbase
-from framework.logger import Logger
 
 project = "orderProcess"  # 用于读取配置文件和日志输出控制
 mylogger = Logger(logger=project + "Log").getlog()
@@ -41,21 +41,21 @@ order.load_web(url)  # 浏览器载入url
 for num in range(1, testtime+1):
 
     order_process_list = ['orderNew',
-                     'projectManager',
-                     'projectExecute',
-                     'exportNotice',
-                     'purchaseRequest',
-                     'purchaseOrder',
-                     'declarationNew',
-                     'checkIn',
-                     'operationIn',
-                     'shipmentNotice',
-                     'checkSubmit',
-                     'checkOut',
-                     'operationOut',
-                     'logisticsTrack',
-                     'financialPayment',
-                     ]
+                          'projectManager',
+                          'projectExecute',
+                          'exportNotice',
+                          'purchaseRequest',
+                          'purchaseOrder',
+                          'declarationNew',
+                          'checkIn',
+                          'operationIn',
+                          'shipmentNotice',
+                          'checkSubmit',
+                          'checkOut',
+                          'operationOut',
+                          'logisticsTrack',
+                          'financialPayment',
+                          ]
     for order_process in order_process_list:
         mylogger.info(order_process + " is executing. Please wait...")
         user = config.get(order_process, "user")
