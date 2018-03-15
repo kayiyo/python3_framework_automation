@@ -169,8 +169,8 @@ class webbase(object):
         else:
             return info
 
-    def read_text(self, xpath):
-        info = self.driver.find_element_by_xpath(xpath).text
+    def read_value(self, xpath):
+        info = self.driver.find_element_by_xpath(xpath).get_attribute('value')
         return info
 
     def read_no(self, class_name):

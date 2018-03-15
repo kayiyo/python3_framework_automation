@@ -15,9 +15,12 @@ class OrderBase(object):
         db = pymysql.connect(host = 'localhost', user = 'order', passwd = 'order',
                              db = 'orderdelivery', charset = 'utf8')
         cursor = db.cursor()
-        sql = 'select * from ' + db_table + ' where id > 0'
+        sql = 'select * from ' + db_table
         cursor.execute(sql)
+        db.close()
         results = cursor.fetchall()
+        order_write_dict = {}
+        order_read_dict = {}
         for row in results:
             order_id = row[0]
             order_name = row[1]
@@ -43,4 +46,9 @@ class OrderBase(object):
                 order.choose(order_xpath, order_key, order_search_area, order_move_point)
             else:
                 pass
-            # print(order_name)
+            print(order_name)
+            print(order.read_value(order_xpath))
+            order_write_dict[order_id] = order.read_value(order_xpath)
+            order_read_dict[order_name] = order.read_value(order_xpath)
+        print(order_write_dict)
+        print(len(order_write_dict), len(order_read_dict))
