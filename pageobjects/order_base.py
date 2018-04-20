@@ -2,8 +2,8 @@
 import time
 import pymysql
 # import MySQLdb
-import sys
 from framework.base_page import BasePage
+import sys
 # from imp import reload
 # reload(sys)
 # sys.setdefaultencoding('utf8')

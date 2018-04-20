@@ -121,7 +121,7 @@ class BasePage(object):
             try:
                 element = self.driver.find_element_by_xpath(selector_value)
                 logger.info("Had find the element \' %s \' successful "
-                                "by %s via value: %s " % (element.text, selector_by, selector_value))
+                            "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: %s" % e)
                 self.get_windows_img()
