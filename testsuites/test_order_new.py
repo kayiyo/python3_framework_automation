@@ -1,8 +1,8 @@
 # _*_ coding: utf-8 _*_
 import time
+import os.path
 import unittest
 import configparser
-import os.path
 from framework.browser_engine import BrowserEngine
 from pageobjects.order_base import OrderBase
 # import sys
