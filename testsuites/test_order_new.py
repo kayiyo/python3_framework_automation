@@ -50,11 +50,12 @@ class OrderNew(unittest.TestCase):
         orderbase.login()
         time.sleep(2)
         orderbase.get_windows_img()
-
-        orderbase.order_execute(db_table)
-
+        code_xshth = orderbase.order_execute(db_table)
         orderbase.get_windows_img()
         orderbase.logout()
+        orderbase.sql_write(name='XSHTH', value=code_xshth)
+        # (temporary_id,temporary_name,temporary_value)=orderbase.order_sql_read()
+        # print(temporary_id,temporary_name,temporary_value)
 
 if __name__ == '__main__':
     unittest.main()

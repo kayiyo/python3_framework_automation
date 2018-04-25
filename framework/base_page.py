@@ -176,7 +176,7 @@ class BasePage(object):
     def read_value(self, selector):
 
         el = self.find_element(selector)
-        value = el.text()
+        value = el.text
         return value
 
     # 获取网页标题

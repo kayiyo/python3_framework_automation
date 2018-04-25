@@ -14,8 +14,8 @@ from testsuites.test_purchase_order import PurchaseOrder
 
 
 # 设置报告文件保存路径
-# report_path = os.path.dirname(os.path.abspath('.')) + '/test_report/'
-report_path = 'D:\\GitHub\\Python\\py3\\test_report\\'
+report_path = os.path.dirname(os.path.abspath('.')) + '/test_report/'
+# report_path = 'D:\\GitHub\\Python\\py3\\test_report\\'
 # 获取系统当前时间
 now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
 

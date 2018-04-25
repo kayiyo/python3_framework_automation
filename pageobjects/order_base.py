@@ -2,11 +2,14 @@
 import time
 import pymysql
 # import MySQLdb
+from framework.logger import Logger
 from framework.base_page import BasePage
-import sys
+# import sys
 # from imp import reload
 # reload(sys)
 # sys.setdefaultencoding('utf8')
+
+logger = Logger(logger="OrderBase").getlog()
 
 
 class OrderBase(BasePage):
@@ -30,6 +33,40 @@ class OrderBase(BasePage):
         self.click(self.button_logout)
         self.sleep(1)
 
+    @staticmethod
+    def sql_write(name, value):
+        db = pymysql.connect(host='localhost', user='orderuser', passwd='order',
+                             db='orderdelivery', charset='utf8')
+        cursor = db.cursor()
+        sql = "update" + " temporary " + "set name ='%s', value = '%s' WHERE id = 1;" % (name, value)
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 提交到数据库执行
+            db.commit()
+        except Exception as e:
+            # 如果发生错误则回滚
+            db.rollback()
+        db.close()
+
+    @staticmethod
+    def sql_read():
+        temporary_id = 1
+        temporary_name = 'XSHTH'
+        temporary_value = 'XSHTH2018'
+        db = pymysql.connect(host='localhost', user='orderuser', passwd='order',
+                             db='orderdelivery', charset='utf8')
+        cursor = db.cursor()
+        sql = 'select * from ' + 'temporary'
+        cursor.execute(sql)
+        db.close()
+        results = cursor.fetchall()
+        for row in results:
+            temporary_id = row[0]
+            temporary_name = row[1]
+            temporary_value = row[2]
+        return temporary_id, temporary_name, temporary_value
+
     def order_execute(self, db_table):
         order_time = time.strftime("%Y%m%d%H%M%S", time.localtime())  # 所有用到的编号
         db = pymysql.connect(host='localhost', user='orderuser', passwd='order',
@@ -37,18 +74,10 @@ class OrderBase(BasePage):
         cursor = db.cursor()
         sql = 'select * from ' + db_table
         cursor.execute(sql)
-        # try:
-        #     # 执行sql语句
-        #     cursor.execute(sql)
-        #     # 提交到数据库执行
-        #     db.commit()
-        # except:
-        #     # 如果发生错误则回滚
-        #     db.rollback()
         db.close()
         results = cursor.fetchall()
-        order_write_dict = {}
-        order_read_dict = {}
+        # order_write_dict = {}
+        # order_read_dict = {}
         for row in results:
             order_id = row[0]
             order_name = row[1]
@@ -57,10 +86,8 @@ class OrderBase(BasePage):
             order_xpath = row[4]
             order_search_area = row[5]
             order_move_point = row[6]
-            # print("id = %s, name = %s, type = %s, key = %s,
-            #      xpath= %s, search_area = %s, move_point = %s" %
-            #       (order_id, order_name, order_type, order_key, order_xpath,
-            #        order_search_area, order_move_point))
+            logger.info("The current operation：[%d] %s" % (order_id, order_name))
+
             if order_type == 'TYPE_DATE' or order_type == 'Z':
                 self.type(selector=order_xpath, text="%s%s" % (order_key, order_time))
             elif order_type == 'TYPE' or order_type == 'A':
@@ -81,7 +108,7 @@ class OrderBase(BasePage):
                 self.click(selector=order_xpath)
                 time.sleep(int(order_key))
             elif order_type == 'READ_VALUE' or order_type == "G":
-                code = self.find_element(selector=order_xpath)
+                code = self.read_value(selector=order_xpath)
                 return code
             else:
                 pass
