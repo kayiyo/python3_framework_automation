@@ -34,26 +34,26 @@ class OrderBase(BasePage):
         self.sleep(1)
 
     @staticmethod
-    def sql_write(name, value):
+    def sql_write(field, value):
         db = pymysql.connect(host='localhost', user='orderuser', passwd='order',
                              db='orderdelivery', charset='utf8')
         cursor = db.cursor()
-        sql = "update" + " temporary " + "set name ='%s', value = '%s' WHERE id = 1;" % (name, value)
+        sql = "update" + " temporary " + "set " + field + " = '" + value + "' WHERE temporary_id = 1;"
         try:
             # 执行sql语句
             cursor.execute(sql)
             # 提交到数据库执行
             db.commit()
-        except Exception as e:
+        except:
             # 如果发生错误则回滚
             db.rollback()
         db.close()
 
     @staticmethod
-    def sql_read():
+    def sql_read(key='temporary_sales_num'):
         temporary_id = 1
-        temporary_name = 'XSHTH'
-        temporary_value = 'XSHTH2018'
+        temporary_sales_num = 'XSHTH2018'
+        temporary_projects_num = 'XMH2018'
         db = pymysql.connect(host='localhost', user='orderuser', passwd='order',
                              db='orderdelivery', charset='utf8')
         cursor = db.cursor()
@@ -63,9 +63,14 @@ class OrderBase(BasePage):
         results = cursor.fetchall()
         for row in results:
             temporary_id = row[0]
-            temporary_name = row[1]
-            temporary_value = row[2]
-        return temporary_id, temporary_name, temporary_value
+            temporary_sales_num = row[1]
+            temporary_projects_num = row[2]
+        if key == 'temporary_id':
+            return temporary_id
+        elif key == 'temporary_sales_num':
+            return temporary_sales_num
+        elif key == 'temporary_projects_num':
+            return temporary_projects_num
 
     def order_execute(self, db_table):
         order_time = time.strftime("%Y%m%d%H%M%S", time.localtime())  # 所有用到的编号
@@ -92,6 +97,12 @@ class OrderBase(BasePage):
                 self.type(selector=order_xpath, text="%s%s" % (order_key, order_time))
             elif order_type == 'TYPE' or order_type == 'A':
                 self.type(selector=order_xpath, text=order_key)
+            elif order_type == 'SEARCH' or order_type == 'S':
+                value = self.sql_read(key=order_key)
+                if value == '':
+                    self.type(selector=order_xpath, text="%s" % '')
+                else:
+                    self.type(selector=order_xpath, text="%s" % value)
             elif order_type == 'SELECT_RANDOM' or order_type == 'B':
                 self.select_random(selector=order_xpath, count=int(order_key))
             elif order_type == 'SELECT' or order_type == 'C':
@@ -100,6 +111,8 @@ class OrderBase(BasePage):
                 self.click(selector=order_xpath)
                 self.keys_enter(selector=order_xpath)
             elif order_type == 'CHOOSE' or order_type == 'E':
+                if 'temporary' in order_key:
+                    order_key = self.sql_read(key=order_key)
                 self.choose(search_button=order_xpath,
                             search_value=order_key,
                             search_bar=order_search_area,
