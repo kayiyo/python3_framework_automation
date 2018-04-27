@@ -3,6 +3,7 @@ import HTMLTestRunner
 import os
 import unittest
 import time
+from framework.logger import Logger
 # import sys
 # sys.path.append('D:\\GitHub\\Python\\py3\\')
 from testsuites.test_order_new import OrderNew
@@ -12,7 +13,7 @@ from testsuites.test_export_notice import ExportNotice
 from testsuites.test_purchase_request import PurchaseRequest
 from testsuites.test_purchase_order import PurchaseOrder
 
-
+logger = Logger(logger="HTMLReport").getlog()
 # 设置报告文件保存路径
 report_path = os.path.dirname(os.path.abspath('.')) + '/test_report/'
 # report_path = 'D:\\GitHub\\Python\\py3\\test_report\\'
@@ -45,3 +46,4 @@ if __name__ == '__main__':
     # 开始执行测试套件
     runner.run(suite)
     fp.close()
+    logger.info("Now, The HTML report is generated.Plz check in %s" % HtmlFile)

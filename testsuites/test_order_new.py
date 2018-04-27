@@ -49,11 +49,8 @@ class OrderNew(unittest.TestCase):
         orderbase.send_password(password)
         orderbase.login()
         time.sleep(2)
-        orderbase.get_windows_img()
-        temporary_sales_num = orderbase.order_execute(db_table)
-        orderbase.get_windows_img()
+        orderbase.order_execute(db_table)
         orderbase.logout()
-        orderbase.sql_write('temporary_sales_num', temporary_sales_num)
 
 if __name__ == '__main__':
     unittest.main()

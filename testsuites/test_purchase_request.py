@@ -49,10 +49,9 @@ class PurchaseRequest(unittest.TestCase):
         orderbase.login()
         time.sleep(2)
         orderbase.get_windows_img()
-        temporary_projects_num = orderbase.order_execute(db_table)
+        orderbase.order_execute(db_table)
         orderbase.get_windows_img()
         orderbase.logout()
-        orderbase.sql_write('temporary_projects_num', temporary_projects_num)
 
 if __name__ == '__main__':
     unittest.main()
