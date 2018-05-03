@@ -172,6 +172,13 @@ class BasePage(object):
         value = el.get_attribute('value')
         return value
 
+    # 获取文字数值
+    def get_text(self, selector):
+
+        el = self.find_element(selector)
+        value = el.getText()
+        return value
+
     # 读取文本
     def read_value(self, selector):
 

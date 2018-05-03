@@ -4,6 +4,7 @@ import os
 import unittest
 import time
 from framework.logger import Logger
+from pageobjects.order_base import OrderBase
 # import sys
 # sys.path.append('D:\\GitHub\\Python\\py3\\')
 from testsuites.test_order_new import OrderNew
@@ -21,7 +22,8 @@ report_path = os.path.dirname(os.path.abspath('.')) + '/test_report/'
 now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
 
 # 设置报告名称格式
-HtmlFile = report_path + now + "HTMLtemplate.html"
+ReportName = now + "HTMLReport.html"
+HtmlFile = report_path + ReportName
 fp = open(HtmlFile, "wb")
 
 # 定义测试用例的目录为当前目录
@@ -46,4 +48,5 @@ if __name__ == '__main__':
     # 开始执行测试套件
     runner.run(suite)
     fp.close()
+    OrderBase.sql_update('html_report', ReportName)
     logger.info("Now, The HTML report is generated.Plz check in %s" % HtmlFile)
