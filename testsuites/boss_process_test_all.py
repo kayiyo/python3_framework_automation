@@ -40,5 +40,4 @@ if __name__ == '__main__':
     # 开始执行测试套件
     runner.run(suite)
     fp.close()
-    OrderBase.sql_update('html_report', ReportName)
     logger.info("Now, The HTML report is generated.Plz check in %s" % HtmlFile)
